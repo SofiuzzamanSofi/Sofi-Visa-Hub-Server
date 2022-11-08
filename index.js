@@ -19,7 +19,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 
 app.get("/", (req, res) => {
-    res.send("Bismillahir Rahmainr Rahim, from:- Sofi Visa Hub");
+    res.send("Bismillahir Rahmainr Rahim, from:- Sofi Visa Hub, SERVER-SIDE");
 });
 
 app.listen(port, () => {
