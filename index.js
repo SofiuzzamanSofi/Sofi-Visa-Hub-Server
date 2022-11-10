@@ -54,7 +54,13 @@ async function run() {
                 success: true,
                 message: "Successfully got the service by id",
                 data: service
-            })
+            });
+        });
+
+        app.post("/service/:id/comment", async (req, res) => {
+            const { id } = req.params;
+            const comment = req.body;
+            console.log(id, comment)
         })
 
     }
