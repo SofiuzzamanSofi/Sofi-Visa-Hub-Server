@@ -12,7 +12,7 @@ app.use(express.json());
 
 
 // mongodb -----
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.VISA_USER}:${process.env.VISA_SECRET}@cluster0.zwgt8km.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
@@ -24,6 +24,7 @@ async function run() {
     // console.log(servicesCollection);
 
     try {
+
         app.get("/", (req, res) => {
             res.send("Bismillahir Rahmainr Rahim, from:- Sofi Visa Hub, SERVER-SIDE");
         });
@@ -42,6 +43,19 @@ async function run() {
                 data: services
             });
         });
+
+        app.get("/service/:id", async (req, res) => {
+            const { id } = req.params;
+            const query = { _id: ObjectId(id) }
+            // const { id } = req.params;
+            // const query = { _id: ObjectId(id) };
+            const service = await servicesCollection.findOne(query);
+            res.send({
+                success: true,
+                message: "Successfully got the service by id",
+                data: service
+            })
+        })
 
     }
     catch (error) {
