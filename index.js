@@ -4,8 +4,8 @@ const app = express();
 const port = process.env.PORT || 5000;
 require("colors");
 require('dotenv').config();
-// const service = require('./services.json');
-// console.log(service)
+
+
 //middleware -------
 app.use(cors());
 app.use(express.json());
@@ -29,9 +29,8 @@ async function run() {
         });
 
         app.get("/services", async (req, res) => {
-            const pageNo = parseInt(req.query.pageNo);
-            const perPageContentSize = parseInt(req.query.perPageContentSize);
-            console.log(pageNo, perPageContentSize)
+            const pageNo = parseInt(req?.query?.pageNo);
+            const perPageContentSize = parseInt(req?.query?.perPageContentSize);
             const query = {};
             const cursor = servicesCollection.find(query);
             const services = await cursor.skip(pageNo * perPageContentSize).limit(perPageContentSize).toArray();
@@ -43,6 +42,7 @@ async function run() {
                 data: services
             });
         });
+
     }
     catch (error) {
         console.log(`error from under function try> catch ${error}`);
@@ -51,10 +51,6 @@ async function run() {
             error: error?.message || "error from try> catch "
         })
     };
-
-
-
-
 };
 
 run().catch(error => console.log(`error from run function catch: ${error}`.bgYellow))
