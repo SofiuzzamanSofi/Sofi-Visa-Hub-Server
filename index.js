@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 require("colors");
 require('dotenv').config();
-const service = require('./services.json');
+// const service = require('./services.json');
 // console.log(service)
 //middleware -------
 app.use(cors());
@@ -19,16 +19,28 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run() {
 
+    const database = client.db("sofi-visa-hub-server");
+    const servicesCollection = database.collection("services");
+    // console.log(servicesCollection);
+
     try {
         app.get("/", (req, res) => {
             res.send("Bismillahir Rahmainr Rahim, from:- Sofi Visa Hub, SERVER-SIDE");
         });
 
-        app.get("/services", (req, res) => {
+        app.get("/services", async (req, res) => {
+            const pageNo = parseInt(req.query.pageNo);
+            const perPageContentSize = parseInt(req.query.perPageContentSize);
+            console.log(pageNo, perPageContentSize)
+            const query = {};
+            const cursor = servicesCollection.find(query);
+            const services = await cursor.skip(pageNo * perPageContentSize).limit(perPageContentSize).toArray();
+            const count = await servicesCollection.countDocuments();
             res.send({
                 success: true,
                 message: "Successfully got services data",
-                data: service
+                count: count,
+                data: services
             });
         });
     }
