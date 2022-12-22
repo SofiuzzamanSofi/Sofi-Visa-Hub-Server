@@ -80,14 +80,15 @@ async function run() {
 
 
         // get all comments by service to service sections --------------
-        app.get("/service/:id/comment", async (req, res) => {
+        app.get("/service/:id", async (req, res) => {
             const { id } = req.params;
-            const query = { _id: ObjectId(id) }
-            const service = await servicesCollection.findOne(query);
+            console.log(id)
+            // const query = { _id: ObjectId(id) }
+            // const service = await servicesCollection.findOne(query);
             // const serviceName = service?.name;
             // console.log(serviceName);
             // const commentCollection = database.collection(serviceName);
-            const commentQuery = {};
+            const commentQuery = { serviceId: id };
             const cursor = commentCollection.find(commentQuery);
             const allComments = await cursor.toArray();
             // console.log(services);
