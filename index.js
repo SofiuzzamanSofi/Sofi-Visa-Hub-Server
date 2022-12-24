@@ -65,7 +65,7 @@ async function run() {
 
 
         // add comment / post methods------------------
-        app.post("/service/:id/comment", async (req, res) => {
+        app.post("/comment/:id", async (req, res) => {
             const { id } = req.params;
             const comment = req.body;
             // console.log(id, comment.serviceName);
@@ -80,9 +80,10 @@ async function run() {
 
 
         // get all comments by service to service sections --------------
-        app.get("/service/:id", async (req, res) => {
+        app.get("/comment/:id", async (req, res) => {
             const { id } = req.params;
-            console.log(id)
+            console.log(id);
+            console.log("query, is it");
             // const query = { _id: ObjectId(id) }
             // const service = await servicesCollection.findOne(query);
             // const serviceName = service?.name;
